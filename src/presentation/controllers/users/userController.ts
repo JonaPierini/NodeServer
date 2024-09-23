@@ -14,6 +14,16 @@ export class UserController {
     });
   };
 
+  //GET BY ID
+  public UserById = async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const userById = await UserModel.findById(id);
+    res.json({
+      msg: "User",
+      userById,
+    });
+  };
+
   //CREATE NEW USER
   public NewUser = async (req: Request, res: Response) => {
     const newUser = await UserModel.create({
@@ -41,9 +51,44 @@ export class UserController {
 
   public DeleteUser = async (req: Request, res: Response) => {
     const id = req.params.id;
-    await UserModel.findByIdAndDelete(id, { state: false });
+    const user = await UserModel.findByIdAndUpdate(id, { state: false });
     res.json({
-      msg: "User deleted sucessfuly:",
+      msg: "User deleted change state",
+      user,
     });
+  };
+
+  public DeleteUserDB = async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const user = await UserModel.findByIdAndDelete(id);
+    res.json({
+      msg: "User deleted DB",
+      user,
+    });
+  };
+
+  public PutUser = async (req: Request, res: Response) => {
+    const id = req.params.id;
+    //Actualizo el  rol, y password
+    const upDateUser = {
+      //name: req.body.name,
+      //email: req.body.email,
+      rol: req.body.rol,
+      password: req.body.password,
+      // state: req.body.state,
+      // createdAt: req.body.createdAt,
+    };
+    if (upDateUser.password) {
+      // Encriptar la contraseña
+      const salt = bcrypt.genSaltSync();
+      upDateUser.password = bcrypt.hashSync(upDateUser.password, salt);
+    }
+
+    // Actualizar el usuario y devolver el documento actualizado
+    const usuario = await UserModel.findByIdAndUpdate(id, upDateUser, {
+      new: true,
+    });
+
+    res.json(usuario);
   };
 }

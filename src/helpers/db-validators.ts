@@ -1,3 +1,4 @@
+import { isValidObjectId } from "mongoose";
 import { UserModel } from "../presentation/models/user.model";
 
 export const UserEmailExist = async (email: String) => {
@@ -8,6 +9,10 @@ export const UserEmailExist = async (email: String) => {
 };
 
 export const UserIdExist = async (id: String) => {
+  // Verificar si el id es válido
+  if (!isValidObjectId(id)) {
+    throw new Error(`El id: ${id}, no es un ObjectId válido.`);
+  }
   // Verificar si el correo existe
   const userId = await UserModel.findById(id);
   if (!userId) {
