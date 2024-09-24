@@ -9,7 +9,7 @@ export class UserController {
   public AllUsers = async (req: Request, res: Response) => {
     const allUser = await UserModel.find();
     res.json({
-      msg: "All User in BD",
+      msg: "Todos los usuarios en la BD",
       allUser,
     });
   };
@@ -19,7 +19,7 @@ export class UserController {
     const id = req.params.id;
     const userById = await UserModel.findById(id);
     res.json({
-      msg: "User",
+      msg: "Usuario encontrado: ",
       userById,
     });
   };
@@ -44,7 +44,7 @@ export class UserController {
 
     //Lo que muestro en postman
     res.json({
-      msg: "New user created",
+      msg: "Nuevos usuarios creado",
       newUser,
     });
   };
@@ -54,10 +54,11 @@ export class UserController {
     const user = await UserModel.findByIdAndUpdate(
       id,
       { state: false },
+      //con el new devuelvo el valor del usuario actualizado
       { new: true }
     );
     res.json({
-      msg: "User deleted change state",
+      msg: "Cambio de estado = estado(false)",
       user,
     });
   };
@@ -66,7 +67,7 @@ export class UserController {
     const id = req.params.id;
     const user = await UserModel.findByIdAndDelete(id);
     res.json({
-      msg: "User deleted DB",
+      msg: "El usuario borrado fue",
       user,
     });
   };
@@ -99,6 +100,7 @@ export class UserController {
   //GET BY LIMIT (PAGINATIO)
   public PaginationUser = async (req: Request, res: Response) => {
     const { limite = 5, desde = 0 } = req.query;
+    //Me va a traer aquellos usuarios que tengan el estado en true
     const query = { state: true };
 
     const [total, usuarios] = await Promise.all([

@@ -4,6 +4,7 @@ import { check } from "express-validator";
 import { UserEmailExist, UserIdExist } from "../../../helpers/db-validators";
 import { validate } from "../../../middlewares/validate";
 import { validateRole } from "../../../middlewares/validate-role";
+import { validateJWT } from "../../../middlewares/validate-token";
 
 export const UserRoute = () => {
   const router = Router();
@@ -35,13 +36,11 @@ export const UserRoute = () => {
     [
       check("name", "El nombre es obligatorio").not().isEmpty(),
       check("email", "El email no puede estar vacio").not().isEmpty(),
+      check("password", "El password no puede estar vacio").not().isEmpty(),
       check(
         "password",
-        "El password no puede estar vacio y tiene que tener minimo 8 caracteres"
-      )
-        .not()
-        .isEmpty()
-        .isLength({ min: 8 }),
+        "El password tiene que tener minimo 8 caracteres"
+      ).isLength({ min: 8 }),
       check("email", "Tiene que ser un correo válido").isEmail(),
       check("rol", "Rol tiene que existir").not().isEmpty(),
       check("rol", "No es un rol válido").isIn(["ADMIN_ROLE", "USER_ROLE"]),
@@ -78,7 +77,7 @@ export const UserRoute = () => {
   //DELETE USER
   router.delete(
     "/deleteUser/:id",
-    [validateRole, check("id").custom(UserIdExist), validate],
+    [validateJWT, validateRole, check("id").custom(UserIdExist), validate],
     userControloer.DeleteUser
   );
 
@@ -86,6 +85,7 @@ export const UserRoute = () => {
   router.delete(
     "/deleteUserDB/:id",
     [
+      validateJWT,
       validateRole,
       check("id", "No es un ID válido").isMongoId(),
       check("id").custom(UserIdExist),
