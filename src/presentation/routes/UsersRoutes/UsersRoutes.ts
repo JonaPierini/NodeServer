@@ -19,10 +19,14 @@ export const UserRoute = () => {
     "/userById/:id",
     [
       check("id", "No es un ID válido").isMongoId(),
-      check("id").custom(UserIdExist),
+      check("email").custom(UserEmailExist),
+      validate,
     ],
     userControloer.UserById
   );
+
+  //GET USER BY LIMIT
+  router.get("/pagination", userControloer.PaginationUser);
 
   //CREATE USER
   //ESE CHECK HACE LAS VALIDACIONES CONFORME ESTAN EN EL MODELO y CONFORME LO MANDO EN EL BODY. Por ejemplo si en el modelo usa name, en el check no puedo usar nombre
@@ -55,6 +59,7 @@ export const UserRoute = () => {
     [
       check("name", "El nombre no se puede cambiar").isEmpty(),
       check("email", "El email no se puede cambiar").isEmpty(),
+      check("state", "El estado no puede estar vacio").not().isEmpty(),
       check(
         "password",
         "El password no puede estar vacio y tiene que tener minimo 8 caracteres"

@@ -51,7 +51,11 @@ export class UserController {
 
   public DeleteUser = async (req: Request, res: Response) => {
     const id = req.params.id;
-    const user = await UserModel.findByIdAndUpdate(id, { state: false });
+    const user = await UserModel.findByIdAndUpdate(
+      id,
+      { state: false },
+      { new: true }
+    );
     res.json({
       msg: "User deleted change state",
       user,
@@ -69,13 +73,13 @@ export class UserController {
 
   public PutUser = async (req: Request, res: Response) => {
     const id = req.params.id;
-    //Actualizo el  rol, y password
+    //Actualizo el  rol, state y password
     const upDateUser = {
       //name: req.body.name,
       //email: req.body.email,
       rol: req.body.rol,
       password: req.body.password,
-      // state: req.body.state,
+      state: req.body.state,
       // createdAt: req.body.createdAt,
     };
     if (upDateUser.password) {
@@ -90,5 +94,21 @@ export class UserController {
     });
 
     res.json(usuario);
+  };
+
+  //GET BY LIMIT (PAGINATIO)
+  public PaginationUser = async (req: Request, res: Response) => {
+    const { limite = 5, desde = 0 } = req.query;
+    const query = { state: true };
+
+    const [total, usuarios] = await Promise.all([
+      UserModel.countDocuments(query),
+      UserModel.find(query).skip(Number(desde)).limit(Number(limite)),
+    ]);
+
+    res.json({
+      total,
+      usuarios,
+    });
   };
 }
