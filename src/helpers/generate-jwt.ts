@@ -10,6 +10,7 @@ export const generarJWT = (id: String) => {
     jwt.sign(
       payload,
       envs.SECRETORPRIVATEKEY,
+      //duracion del token 4 horas
       {
         expiresIn: "4h",
       },

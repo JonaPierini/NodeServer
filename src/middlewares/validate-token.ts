@@ -8,6 +8,7 @@ export const validateJWT = async (
   res: Response,
   next: NextFunction
 ) => {
+  //RECIBIMOS EL TOKEN del cliente y, a partir de ese token, sabemos los datos del cliente
   const token = req.header("x-token");
 
   if (!token) {
@@ -47,3 +48,10 @@ export const validateJWT = async (
     });
   }
 };
+
+// Parse - JWT - Obtener Payload y fecha de creación y expiración
+// function parseJwt (token) {
+// 	var base64Url = token.split('.')[1];
+// 	var base64 = base64Url.replace('-', '+').replace('_', '/');
+// 	return JSON.parse(window.atob(base64));
+// };

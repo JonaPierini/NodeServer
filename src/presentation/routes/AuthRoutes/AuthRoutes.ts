@@ -3,13 +3,13 @@ import { UserController } from "../../controllers/users/userController";
 import { check } from "express-validator";
 import { validate } from "../../../middlewares/validate";
 import { UserEmailExist, UserIdExist } from "../../../helpers/db-validators";
-import { LoginController } from "../../controllers/auth/authController";
+import { AuthController } from "../../controllers/auth/authController";
 
 export const AuthRoute = () => {
   const router = Router();
 
   //Instanciamos el controlador del login
-  const loginControler = new LoginController();
+  const authControler = new AuthController();
 
   router.post(
     "/login",
@@ -18,7 +18,7 @@ export const AuthRoute = () => {
       check("password", "El password es obligatorio").not().isEmpty(),
       validate,
     ],
-    loginControler.Login
+    authControler.Login
   );
 
   return router;
