@@ -1,8 +1,6 @@
 import { Router } from "express";
-import { UserController } from "../../controllers/users/userController";
 import { check } from "express-validator";
 import { validate } from "../../../middlewares/validate";
-import { UserEmailExist, UserIdExist } from "../../../helpers/db-validators";
 import { AuthController } from "../../controllers/auth/authController";
 
 export const AuthRoute = () => {
