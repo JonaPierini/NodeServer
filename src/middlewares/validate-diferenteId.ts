@@ -1,7 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import jwt, { JwtPayload } from "jsonwebtoken";
-import { envs } from "../config/envs";
-import { UserModel } from "../presentation/models/user.model";
 
 //Validaciones que vienen de expresss-validatoer
 //Next es una funcion que se ejecuta despues de hacer las validaciones
