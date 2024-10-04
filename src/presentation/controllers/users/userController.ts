@@ -45,7 +45,7 @@ export class UserController {
     await newUser.save();
 
     //Lo que muestro en postman
-    res.json({
+    res.status(200).json({
       msg: "Nuevos usuarios creado",
       newUser,
     });
@@ -59,7 +59,7 @@ export class UserController {
       //con el new devuelvo el valor del usuario actualizado
       { new: true }
     );
-    res.json({
+    res.status(200).json({
       msg: "Cambio de estado = estado(false)",
       user,
     });
@@ -75,7 +75,7 @@ export class UserController {
     //Encontramos el usuario que hizo la accion
     const userAction = await UserModel.findById(data.id);
 
-    res.json({
+    res.status(200).json({
       msg: "El usuario borrado fue",
       user,
       msgAction: "El usuario que hizo la accion fue",
@@ -105,7 +105,7 @@ export class UserController {
       new: true,
     });
 
-    res.json(usuario);
+    res.status(200).json(usuario);
   };
 
   //GET BY LIMIT (PAGINATIO)
@@ -119,7 +119,7 @@ export class UserController {
       UserModel.find(query).skip(Number(desde)).limit(Number(limite)),
     ]);
 
-    res.json({
+    res.status(200).json({
       total,
       usuarios,
     });
