@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { UserModel } from "../../models/user.model";
 import * as bcrypt from "bcryptjs";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import { envs } from "../../../config/envs";
 
 export class UserController {
   constructor() {}
@@ -66,9 +68,18 @@ export class UserController {
   public DeleteUserDB = async (req: Request, res: Response) => {
     const id = req.params.id;
     const user = await UserModel.findByIdAndDelete(id);
+    const token = req.header("x-token");
+
+    // Hacemos la verificacion del token para poder agarrar la data y con esa data tomamos el id del usuario que hizo la accion
+    const data = jwt.verify(token!, envs.SECRETORPRIVATEKEY) as JwtPayload;
+    //Encontramos el usuario que hizo la accion
+    const userAction = await UserModel.findById(data.id);
+
     res.json({
       msg: "El usuario borrado fue",
       user,
+      msgAction: "El usuario que hizo la accion fue",
+      userAction,
     });
   };
 

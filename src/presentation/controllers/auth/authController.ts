@@ -36,7 +36,7 @@ export class AuthController {
         });
       }
 
-      // Generar el JWT
+      // Generar el JWT y le paso el usuario.id para generar ese token
       const token = await generarJWT(usuario.id);
 
       res.json({

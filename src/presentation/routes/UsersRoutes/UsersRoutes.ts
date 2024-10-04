@@ -5,6 +5,7 @@ import { UserEmailExist, UserIdExist } from "../../../helpers/db-validators";
 import { validate } from "../../../middlewares/validate";
 import { validateRole } from "../../../middlewares/validate-role";
 import { validateJWT } from "../../../middlewares/validate-token";
+import { validateDiferenteId } from "../../../middlewares/validate-diferenteId";
 
 export const UserRoute = () => {
   const router = Router();
@@ -77,7 +78,13 @@ export const UserRoute = () => {
   //DELETE USER
   router.delete(
     "/deleteUser/:id",
-    [validateJWT, validateRole, check("id").custom(UserIdExist), validate],
+    [
+      validateJWT,
+      validateRole,
+      validateDiferenteId,
+      check("id").custom(UserIdExist),
+      validate,
+    ],
     userControloer.DeleteUser
   );
 
@@ -87,6 +94,7 @@ export const UserRoute = () => {
     [
       validateJWT,
       validateRole,
+      validateDiferenteId,
       check("id", "No es un ID válido").isMongoId(),
       check("id").custom(UserIdExist),
       validate,

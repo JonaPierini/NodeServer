@@ -6,7 +6,7 @@ export const generarJWT = (id: String) => {
     //payload es el ID del usuario
     const payload = { id };
 
-    //Screto
+    //Screto. Aca lo que le pasamos como payload es el ID del usuario. Entonces despues para verificarlo, esa verificion va a ser por medio del ID
     jwt.sign(
       payload,
       envs.SECRETORPRIVATEKEY,

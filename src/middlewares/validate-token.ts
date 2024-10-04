@@ -8,7 +8,7 @@ export const validateJWT = async (
   res: Response,
   next: NextFunction
 ) => {
-  //RECIBIMOS EL TOKEN del cliente y, a partir de ese token, sabemos los datos del cliente
+  //RECIBIMOS EL TOKEN del cliente y, a partir de ese token, sabemos los datos del cliente (id)
   const token = req.header("x-token");
 
   if (!token) {
@@ -19,6 +19,7 @@ export const validateJWT = async (
 
   try {
     // Verificamos el token y forzamos el tipo del payload
+    //esto es para verificar el token
     const { id } = jwt.verify(token, envs.SECRETORPRIVATEKEY) as JwtPayload;
 
     // leer el usuario que corresponde al id
@@ -37,7 +38,8 @@ export const validateJWT = async (
       });
     }
 
-    // Asignamos el usuario a req.user en lugar de modificar el body
+    // Asignamos al usuario a req.user en lugar de modificar el body
+    //aca le asignamos al req.body.user el usuario encontrado en el modelo
     req.body.user = usuario;
 
     next();
