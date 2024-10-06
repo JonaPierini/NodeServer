@@ -14,7 +14,7 @@ const categorySchema = new mongoose.Schema({
     required: true,
   },
   //usuario que creo la categoria
-  usuario: {
+  user: {
     type: Schema.Types.ObjectId,
     //aca voy a hacer referencia al otro modelo (User). Si o Si mismo nombre
     ref: "User",

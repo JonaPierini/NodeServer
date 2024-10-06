@@ -16,7 +16,7 @@ export class UserController {
     });
   };
 
-  //GET BY ID
+  //GET USER BY ID
   public UserById = async (req: Request, res: Response) => {
     const id = req.params.id;
     const userById = await UserModel.findById(id);
